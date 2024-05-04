@@ -17,7 +17,7 @@ public class SubjectRepository implements Repository<Subject> {
     @Override
     public int save(Subject subject) {
         subjectList.add(subject);
-        subject.creatAutoId();
+        subject.create();
         return subject.getId();
     }
 

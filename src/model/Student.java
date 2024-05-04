@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Getter
-public class Student implements AutoId {
+public class Student implements CreateModel {
     private static int staticId = 0;
     private int studentId;
     private String studentName;
@@ -18,7 +18,7 @@ public class Student implements AutoId {
     }
 
     @Override
-    public void creatAutoId() {
+    public void create() {
         studentId = staticId++;
     }
 

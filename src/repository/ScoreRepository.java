@@ -17,7 +17,7 @@ public class ScoreRepository implements Repository<Score> {
     @Override
     public int save(Score score) {
         scoreList.add(score);
-        score.creatAutoId();
+        score.create();
         return score.getId();
     }
 

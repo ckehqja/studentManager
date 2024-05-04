@@ -33,7 +33,7 @@ public class StudentService implements Service<Student> {
         System.out.println();
     }
 
-    public void joinStudent(Scanner sc) {
+    public void addStudent(Scanner sc) {
         boolean next;
         int requiredNum = 0;
         Set<String> subjectSet = new HashSet<>();

@@ -1,6 +1,5 @@
 package repository;
 
-import lombok.Getter;
 import model.Student;
 
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ public class StudentRepository implements Repository<Student> {
     @Override
     public int save(Student student) {
         studentList.add(student);
-        student.creatAutoId();
+        student.create();
         return student.getId();
     }
 
