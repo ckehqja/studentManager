@@ -50,7 +50,7 @@ public class Main {
                 }
 
                 case "2" -> {
-                    System.out.println("2");
+                    System.out.println("2222");
                 }
 
                 case "3" -> {
