@@ -14,6 +14,15 @@ public class ScoreRepository implements Repository<Score> {
         return scoreList.get(id);
     }
 
+    public Score findBy2Id(int studentId, int subjectId) {
+        for (Score score : scoreList) {
+            if(score.getStudentId() == studentId && score.getSubjectId() == subjectId) {
+                return score;
+            }
+        }
+        return null;
+    }
+
     @Override
     public int save(Score score) {
         scoreList.add(score);

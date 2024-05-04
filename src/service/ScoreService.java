@@ -12,7 +12,7 @@ import static model.Grade.N;
 
 public class ScoreService implements Service<Score> {
 
-    Repository<Score> repository = new ScoreRepository();
+    ScoreRepository repository = new ScoreRepository();
     StudentService studentService = new StudentService();
     SubjectService subjectService = new SubjectService();
 
@@ -24,6 +24,29 @@ public class ScoreService implements Service<Score> {
     @Override
     public Score findById(int id) {
         return repository.findById(id);
+    }
+
+    public Score findBy2Id(int studentId, int subjectId) {
+        return repository.findBy2Id(studentId, subjectId);
+    }
+
+    public void printScore(Score score) {
+        System.out.print("회차   ");
+        for (int i = 1; i < 11; i++) {
+            System.out.print(i + "    ");
+        }
+        System.out.println();
+        System.out.print("점수   ");
+        for (int scoreO : score.getScore()) {
+            System.out.print(scoreO + "   ");
+        }
+        System.out.println();
+        System.out.print("등급   ");
+        for (Grade grade : score.getGrade()) {
+            System.out.print(grade.getGrade() + "    ");
+        }
+        System.out.println();
+        System.out.println();
     }
 
     public void addScore(Scanner sc) {

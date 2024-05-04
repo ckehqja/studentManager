@@ -61,7 +61,16 @@ public class Main {
                     studentInput = sc.nextLine();
                     switch (studentInput) {
                         case "1" -> scoreService.addScore(sc);
-                        case "2" -> System.out.println();
+                        case "2" -> {
+                            System.out.println("studentId >");
+                            int studentId = Integer.parseInt(sc.nextLine());
+                            System.out.println("subjectId >");
+                            int subjectId = Integer.parseInt(sc.nextLine());
+                            Score findScore = scoreService.findBy2Id(studentId, subjectId);
+
+                            scoreService.printScore(findScore);
+                        }
+
                         case "3" -> System.out.println();
                         case "4" -> {
                             return;
@@ -99,7 +108,7 @@ public class Main {
         int saveId = scoreService.save(new Score(0, 0));
         Score findScore = scoreService.findById(saveId);
         for (int i = 0; i < 10; i++) {
-            int n = (int) (Math.random() * 100);
+            int n = (int) (Math.random() * 50) + 50;
             findScore.getScore()[i] = n;
             Grade grade = scoreService.setGrade(subjectService.findById(0), n);
             findScore.getGrade()[i] = grade;
