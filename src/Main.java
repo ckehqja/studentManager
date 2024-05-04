@@ -1,3 +1,5 @@
+import model.Grade;
+import model.Score;
 import model.Student;
 import model.Subject;
 import service.ScoreService;
@@ -58,7 +60,7 @@ public class Main {
                     System.out.println();
                     studentInput = sc.nextLine();
                     switch (studentInput) {
-                        case "1" -> System.out.println();
+                        case "1" -> scoreService.addScore(sc);
                         case "2" -> System.out.println();
                         case "3" -> System.out.println();
                         case "4" -> {
@@ -94,5 +96,13 @@ public class Main {
         studentService.save(new Student("조승현", Set.of("객체지향", "Spring", "JPA", "MySQL", "MongoDB", "디자인과 패턴")));
         studentService.save(new Student("우동수", Set.of("Java", "Spring", "JPA", "MySQL", "Redis", "Spring Security")));
 
+        int saveId = scoreService.save(new Score(0, 0));
+        Score findScore = scoreService.findById(saveId);
+        for (int i = 0; i < 10; i++) {
+            int n = (int) (Math.random() * 100);
+            findScore.getScore()[i] = n;
+            Grade grade = scoreService.setGrade(subjectService.findById(0), n);
+            findScore.getGrade()[i] = grade;
+        }
     }
 }

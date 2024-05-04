@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class StudentService implements Service<Student> {
 
-    private final Repository<Student> repository = new StudentRepository();
+    private static Repository<Student> repository = new StudentRepository();
 
     @Override
     public int save(Student student) {
