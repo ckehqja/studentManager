@@ -1,7 +1,8 @@
 package model;
 
-public class Score implements AutoId{
-    static private int scoreId = 0;
+public class Score implements AutoId {
+    private static int staticId = 0;
+    private int scoreId = 0;
     private int studentId;
     private int step;
     private int score;
@@ -9,7 +10,7 @@ public class Score implements AutoId{
 
     @Override
     public void creatAutoId() {
-        scoreId++;
+        scoreId = staticId++;
     }
 
     @Override

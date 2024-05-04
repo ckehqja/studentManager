@@ -4,7 +4,6 @@ import service.ScoreService;
 import service.StudentService;
 import service.SubjectService;
 
-import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
 

@@ -1,7 +1,8 @@
 package model;
 
 public class Subject implements AutoId{
-    static private int subjectId = 0;
+    private static int staticId = 0;
+     private int subjectId;
     private String subjectName;
     private SubjectType subjectType;
 
@@ -12,7 +13,7 @@ public class Subject implements AutoId{
 
     @Override
     public void creatAutoId() {
-        subjectId++;
+        subjectId = staticId++;
     }
 
     @Override
