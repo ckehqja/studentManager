@@ -106,11 +106,11 @@ public class ScoreService implements Service<Score> {
             setStepScore(findScore, step, mark);
             System.out.println("새로운 점수를 만들어 추가하였습니다.");
         } else {
-            for (Score listScore : list) {
-                if (listScore.getSubjectId() == findSubject.getId() &&
-                        listScore.getStudentId() == findStudent.getId()) {
-                    listScore.getMarkArr()[step - 1] = mark;
-                    listScore.getGradeArr()[step - 1] = setGrade(subjectId, mark);
+            for (Score score : list) {
+                if (score.getSubjectId() == findSubject.getId() &&
+                        score.getStudentId() == findStudent.getId()) {
+                    score.getMarkArr()[step - 1] = mark;
+                    score.getGradeArr()[step - 1] = setGrade(subjectId, mark);
                     System.out.println("기존 점수에 추가하였습니다. ");
                 } else {
                     int saveId = repository.save(new Score(studentId, subjectId));
@@ -154,5 +154,19 @@ public class ScoreService implements Service<Score> {
     public void setStepScore(Score score, int step, int mark) {
         score.getMarkArr()[step - 1] = mark;
         score.getGradeArr()[step - 1] = setGrade(score.getSubjectId(), mark);
+    }
+
+    //테스트를 위한 출력
+    public void allPrintScore() {
+        List<Score> list = repository.getList();
+        for (Score score : list) {
+            int studentId = score.getStudentId();
+            Student findStudent = studentService.findById(studentId);
+            int subjectId = score.getSubjectId();
+            Subject findSubject = subjectService.findById(subjectId);
+            System.out.println(findStudent.getStudentName() + " - " + findSubject.getSubjectName()
+                    + " - " + findSubject.getSubjectType());
+            printScore(score);
+        }
     }
 }
