@@ -116,8 +116,8 @@ public class Main {
             for (int j = 0; j < 9; j++) {//과목 아이디
                 for (int k = 1; k < 11; k++) {//회차
                     int score = (int) (Math.random() * 40) + 50;
-                    scoreService.save(new Score(j, i));
-                    scoreService.save(new Score(j, i));
+                    scoreService.save(new Score(i, j));
+                    scoreService.save(new Score(i, j));
                     Score findScore = scoreService.findBy2Id(i, j);
                     scoreService.setStepScore(findScore,k, score );
                 }

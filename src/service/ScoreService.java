@@ -101,7 +101,7 @@ public class ScoreService implements Service<Score> {
         }
         List<Score> list = repository.getList();
         if (list.isEmpty()) {
-            int saveId = repository.save(new Score(subjectId, studentId));
+            int saveId = repository.save(new Score(studentId, subjectId));
             Score findScore = repository.findById(saveId);
             setStepScore(findScore, step, score);
             System.out.println("새로운 점수를 만들어 추가하였습니다.");
@@ -113,7 +113,7 @@ public class ScoreService implements Service<Score> {
                     listScore.getGrade()[step - 1] = setGrade(subjectId, score);
                     System.out.println("기존 점수에 추가하였습니다. ");
                 } else {
-                    int saveId = repository.save(new Score(subjectId, studentId));
+                    int saveId = repository.save(new Score(studentId, subjectId));
                     Score findScore = repository.findById(saveId);
                     findScore.getScore()[step - 1] = score;
                     findScore.getGrade()[step - 1] = setGrade(subjectId, score);

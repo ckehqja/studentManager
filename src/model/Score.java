@@ -10,7 +10,7 @@ public class Score implements CreateModel {
     private int[] score = new int[STEP];//0~100
     private Grade[] grade = new Grade[STEP];
 
-    public Score(int subjectId, int studentId) {
+    public Score(int studentId, int subjectId) {
         this.subjectId = subjectId;
         this.studentId = studentId;
     }
