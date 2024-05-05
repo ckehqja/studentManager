@@ -29,7 +29,7 @@ public class Main {
         System.out.println("Student Manager");
 
         while (true) {
-            subjectService.printSubjectList();
+            scoreService.allPrintScore();
 
             System.out.println("1. 수강생 관리");
             System.out.println("2. 점수 관리");
@@ -56,7 +56,7 @@ public class Main {
                     studentInput = sc.nextLine();
                     switch (studentInput) {
                         case "1" -> scoreService.addScore(sc);
-                        case "2" ->{
+                        case "2" -> {
                             int studentId;
                             int subjectId;
                             int step;
@@ -76,8 +76,11 @@ public class Main {
                             int studentId = Integer.parseInt(sc.nextLine());
                             System.out.println("subjectId >");
                             int subjectId = Integer.parseInt(sc.nextLine());
+                            Subject findSubject = subjectService.findById(subjectId);
+
                             System.out.println(studentService.findById(studentId).getStudentName()
-                                    + " - " + subjectService.findById(subjectId).getSubjectName());
+                                    + " - " + findSubject.getSubjectName()
+                                    + " : " + findSubject.getSubjectType());
                             Score findScore = scoreService.findBy2Id(studentId, subjectId);
 
                             scoreService.printScore(findScore);
@@ -104,23 +107,33 @@ public class Main {
         subjectService.save(new Subject("Redis", OPTION));
         subjectService.save(new Subject("MongoDB", OPTION));
 
-        studentService.save(new Student("박진성", Set.of("Java", "Spring", "JPA", "MySQL", "Redis", "디자인과 패턴")));
-        studentService.save(new Student("김근영", Set.of("Java", "객체지향", "JPA", "MySQL", "MongoDB", "Spring Security")));
-        studentService.save(new Student("구자준", Set.of("Java", "Spring", "JPA", "MySQL", "Redis", "디자인과 패턴")));
-        studentService.save(new Student("조승현", Set.of("객체지향", "Spring", "JPA", "MySQL", "MongoDB", "디자인과 패턴")));
-        studentService.save(new Student("우동수", Set.of("Java", "Spring", "JPA", "MySQL", "Redis", "Spring Security")));
+        studentService.save(new Student("서찬원", Set.of("Java", "Spring", "JPA", "MySQL", "Redis", "디자인과 패턴")));
+        studentService.save(new Student("박세미", Set.of("Java", "객체지향", "JPA", "MySQL", "MongoDB", "Spring Security")));
+        studentService.save(new Student("박성균", Set.of("Java", "Spring", "JPA", "MySQL", "Redis", "디자인과 패턴")));
+        studentService.save(new Student("차도범", Set.of("객체지향", "Spring", "JPA", "MySQL", "MongoDB", "디자인과 패턴")));
+        studentService.save(new Student("이근수", Set.of("Java", "Spring", "JPA", "MySQL", "Redis", "Spring Security")));
 
 
         for (int i = 0; i < 5; i++) {//사용자 아이디
+            Student findStudent = studentService.findById(i);
+            Set<String> subjectSet = findStudent.getSubjectSet();
+
             for (int j = 0; j < 9; j++) {//과목 아이디
-                for (int k = 1; k < 11; k++) {//회차
-                    int mark = (int) (Math.random() * 40) + 50;
-                    scoreService.save(new Score(i, j));
-                    scoreService.save(new Score(i, j));
-                    Score findScore = scoreService.findBy2Id(i, j);
-                    scoreService.setStepScore(findScore,k, mark );
+                Subject findSubject = subjectService.findById(j);
+                for (String subjectName : subjectSet) {
+                    if (subjectName.equals(findSubject.getSubjectName())) {
+                        scoreService.save(new Score(i, j));
+                        Score findScore = scoreService.findBy2Id(i, j);
+                        for (int k = 1; k < 11; k++) {//회차
+                            int mark = (int) (Math.random() * 40) + 50;
+                            scoreService.setStepScore(findScore, k, mark);
+                        }
+                    }
                 }
+
+
             }
         }
+
     }
 }
