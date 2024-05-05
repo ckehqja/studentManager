@@ -36,7 +36,8 @@ public class ScoreService implements Service<Score> {
         System.out.println();
         System.out.print("점수");
         for (int mark : score.getMarkArr()) {
-            System.out.printf("%5d", mark);
+//            System.out.printf("%5d", mark);
+            System.out.print("   " + mark);
         }
         System.out.println();
         System.out.print("등급   ");

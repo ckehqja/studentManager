@@ -8,8 +8,8 @@ import java.util.Set;
 public class Student implements CreateModel {
     private static int staticId = 0;
     private int studentId;
-    private final String studentName;
-    private final Set<String> subjectSet ;
+    private  String studentName;
+    private  Set<String> subjectSet ;
 
     public Student(String studentName, Set<String> subjectSet) {
         this.studentName = studentName;
