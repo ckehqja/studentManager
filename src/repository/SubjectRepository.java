@@ -7,7 +7,7 @@ import java.util.List;
 
 public class SubjectRepository implements Repository<Subject> {
 
-    private final List<Subject> subjectList = new ArrayList<>();
+    private static final List<Subject> subjectList = new ArrayList<>();
 
     @Override
     public Subject findById(int id) {

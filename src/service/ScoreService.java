@@ -10,9 +10,9 @@ import static model.Grade.*;
 
 public class ScoreService implements Service<Score> {
 
-    static ScoreRepository repository = new ScoreRepository();
-    StudentService studentService = new StudentService();
-    SubjectService subjectService = new SubjectService();
+    private static final ScoreRepository repository = new ScoreRepository();
+    private static final StudentService studentService = new StudentService();
+    private static final SubjectService subjectService = new SubjectService();
 
     @Override
     public int save(Score score) {

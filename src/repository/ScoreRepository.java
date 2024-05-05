@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ScoreRepository implements Repository<Score> {
 
-    private static List<Score> scoreList = new ArrayList<>();
+    private static final List<Score> scoreList = new ArrayList<>();
 
     @Override
     public Score findById(int id) {

@@ -8,7 +8,7 @@ import java.util.List;
 
 public class SubjectService implements Service<Subject> {
 
-    private static Repository<Subject> repository = new SubjectRepository();
+    private static final Repository<Subject> repository = new SubjectRepository();
 
     @Override
     public int save(Subject subject) {

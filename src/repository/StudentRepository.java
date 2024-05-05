@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StudentRepository implements Repository<Student> {
-    private final List<Student> studentList = new ArrayList<>();
+    private static final List<Student> studentList = new ArrayList<>();
 
     @Override
     public Student findById(int id) {
