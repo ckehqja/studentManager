@@ -1,18 +1,16 @@
 package service;
 
 import model.*;
-import repository.Repository;
 import repository.ScoreRepository;
 
 import java.util.List;
 import java.util.Scanner;
 
 import static model.Grade.*;
-import static model.Grade.N;
 
 public class ScoreService implements Service<Score> {
 
-    ScoreRepository repository = new ScoreRepository();
+    static ScoreRepository repository = new ScoreRepository();
     StudentService studentService = new StudentService();
     SubjectService subjectService = new SubjectService();
 
@@ -105,32 +103,38 @@ public class ScoreService implements Service<Score> {
         if (list.isEmpty()) {
             int saveId = repository.save(new Score(subjectId, studentId));
             Score findScore = repository.findById(saveId);
-            findScore.getScore()[step - 1] = score;
-            findScore.getGrade()[step -1] = setGrade(findSubject, score);
+            setStepScore(findScore, step, score);
             System.out.println("새로운 점수를 만들어 추가하였습니다.");
         } else {
             for (Score listScore : list) {
                 if (listScore.getSubjectId() == findSubject.getId() &&
                         listScore.getStudentId() == findStudent.getId()) {
                     listScore.getScore()[step - 1] = score;
-                    listScore.getGrade()[step -1] = setGrade(findSubject, score);
+                    listScore.getGrade()[step - 1] = setGrade(subjectId, score);
                     System.out.println("기존 점수에 추가하였습니다. ");
                 } else {
                     int saveId = repository.save(new Score(subjectId, studentId));
                     Score findScore = repository.findById(saveId);
                     findScore.getScore()[step - 1] = score;
-                    findScore.getGrade()[step -1] = setGrade(findSubject, score);
+                    findScore.getGrade()[step - 1] = setGrade(subjectId, score);
                     System.out.println("새로운 점수를 만들어 추가하였습니다.");
                 }
             }
         }
-
-
-
     }
 
-    public Grade setGrade(Subject subject, int score) {
-        if (subject.getSubjectType() == SubjectType.REQUIRED) {
+    public void editScore(int studentId, int subjectId, int step, int score) {
+        List<Score> scoreList = repository.getList();
+        for (Score inScore : scoreList) {
+            if (inScore.getStudentId() == studentId && inScore.getSubjectId() == subjectId) {
+                setStepScore(inScore, step, score);
+            }
+        }
+    }
+
+    public Grade setGrade(int subjectId, int score) {
+        Subject findSubject = subjectService.findById(subjectId);
+        if (findSubject.getSubjectType() == SubjectType.REQUIRED) {
             if (score >= 95) return A;
             else if (score >= 90) return B;
             else if (score >= 80) return C;
@@ -145,5 +149,10 @@ public class ScoreService implements Service<Score> {
             else if (score >= 50) return F;
             else return N;
         }
+    }
+
+    public void setStepScore(Score score, int step, int mark) {
+        score.getScore()[step - 1] = mark;
+        score.getGrade()[step - 1] = setGrade(score.getSubjectId(), mark);
     }
 }

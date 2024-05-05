@@ -1,4 +1,3 @@
-import model.Grade;
 import model.Score;
 import model.Student;
 import model.Subject;
@@ -47,9 +46,6 @@ public class Main {
                     switch (studentInput) {
                         case "1" -> studentService.addStudent(sc);
                         case "2" -> studentService.printStudentList();
-                        case "3" -> {
-                            return;
-                        }
                     }
                 }
 
@@ -61,26 +57,36 @@ public class Main {
                     studentInput = sc.nextLine();
                     switch (studentInput) {
                         case "1" -> scoreService.addScore(sc);
-                        case "2" -> {
+                        case "2" ->{
+                            int studentId;
+                            int subjectId;
+                            int step;
+                            int mark;
+                            System.out.println("학생 아이디 입력");
+                            studentId = Integer.parseInt(sc.nextLine());
+                            System.out.println("과목 아이디 입력");
+                            subjectId = Integer.parseInt(sc.nextLine());
+                            System.out.println("회차 입력");
+                            step = Integer.parseInt(sc.nextLine());
+                            System.out.println("점수 입력");
+                            mark = Integer.parseInt(sc.nextLine());
+                            scoreService.editScore(studentId, subjectId, step, mark);
+                        }
+                        case "3" -> {
                             System.out.println("studentId >");
                             int studentId = Integer.parseInt(sc.nextLine());
                             System.out.println("subjectId >");
                             int subjectId = Integer.parseInt(sc.nextLine());
+                            System.out.println(studentService.findById(studentId).getStudentName()
+                                    + " - " + subjectService.findById(subjectId).getSubjectName());
                             Score findScore = scoreService.findBy2Id(studentId, subjectId);
 
                             scoreService.printScore(findScore);
                         }
-
-                        case "3" -> System.out.println();
-                        case "4" -> {
-                            return;
-                        }
-                        default -> System.out.println("다시 입력하세요");
                     }
                 }
 
                 case "3" -> {
-                    System.out.println("3");
                     return;
                 }
             }
@@ -105,13 +111,17 @@ public class Main {
         studentService.save(new Student("조승현", Set.of("객체지향", "Spring", "JPA", "MySQL", "MongoDB", "디자인과 패턴")));
         studentService.save(new Student("우동수", Set.of("Java", "Spring", "JPA", "MySQL", "Redis", "Spring Security")));
 
-        int saveId = scoreService.save(new Score(0, 0));
-        Score findScore = scoreService.findById(saveId);
-        for (int i = 0; i < 10; i++) {
-            int n = (int) (Math.random() * 50) + 50;
-            findScore.getScore()[i] = n;
-            Grade grade = scoreService.setGrade(subjectService.findById(0), n);
-            findScore.getGrade()[i] = grade;
+
+        for (int i = 0; i < 5; i++) {//사용자 아이디
+            for (int j = 0; j < 9; j++) {//과목 아이디
+                for (int k = 1; k < 11; k++) {//회차
+                    int score = (int) (Math.random() * 40) + 50;
+                    scoreService.save(new Score(j, i));
+                    scoreService.save(new Score(j, i));
+                    Score findScore = scoreService.findBy2Id(i, j);
+                    scoreService.setStepScore(findScore,k, score );
+                }
+            }
         }
     }
 }

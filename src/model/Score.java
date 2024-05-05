@@ -2,8 +2,6 @@ package model;
 
 import lombok.Getter;
 
-import static model.Grade.*;
-
 @Getter
 public class Score implements CreateModel {
     private int subjectId;
