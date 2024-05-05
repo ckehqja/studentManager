@@ -6,8 +6,8 @@ import lombok.Getter;
 public class Subject implements CreateModel {
     private static int staticId = 0;
      private int subjectId;
-    private String subjectName;
-    private SubjectType subjectType;
+    private final String subjectName;
+    private final SubjectType subjectType;
 
     public Subject(String subjectName, SubjectType subjectType) {
         this.subjectName = subjectName;

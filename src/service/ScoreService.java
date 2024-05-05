@@ -34,14 +34,15 @@ public class ScoreService implements Service<Score> {
             System.out.print(i + "    ");
         }
         System.out.println();
-        System.out.print("점수   ");
+        System.out.print("점수");
         for (int mark : score.getMarkArr()) {
-            System.out.print(mark + "   ");
+            System.out.printf("%5d", mark);
         }
         System.out.println();
         System.out.print("등급   ");
         for (Grade grade : score.getGradeArr()) {
-            System.out.print(grade.getGrade() + "    ");
+            if(grade == null) System.out.print("x    ");
+            else System.out.print(grade.getGrade() + "    ");
         }
         System.out.println();
         System.out.println();
@@ -158,7 +159,11 @@ public class ScoreService implements Service<Score> {
 
     //테스트를 위한 출력
     public void allPrintScore() {
+        System.out.println("모든 점수 출력");
         List<Score> list = repository.getList();
+        if (list.isEmpty()) {
+            System.out.println("list.empty");
+        }
         for (Score score : list) {
             int studentId = score.getStudentId();
             Student findStudent = studentService.findById(studentId);

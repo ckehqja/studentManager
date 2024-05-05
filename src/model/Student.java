@@ -2,15 +2,14 @@ package model;
 
 import lombok.Getter;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Getter
 public class Student implements CreateModel {
     private static int staticId = 0;
     private int studentId;
-    private String studentName;
-    private Set<String> subjectSet = new HashSet<>();
+    private final String studentName;
+    private final Set<String> subjectSet ;
 
     public Student(String studentName, Set<String> subjectSet) {
         this.studentName = studentName;

@@ -26,86 +26,102 @@ public class Main {
 
         init(subjectService, studentService, scoreService);
 
-        System.out.println("Student Manager");
 
         while (true) {
-            scoreService.allPrintScore();
-
+            System.out.println("=======Student Manager=======");
             System.out.println("1. 수강생 관리");
             System.out.println("2. 점수 관리");
             System.out.println("3. 종료");
+            System.out.println("4. 모든 점수 출력");
             mainInput = sc.nextLine();
-
-            switch (mainInput) {
-                case "1" -> {
-                    System.out.println("1. 수강생 등록");
-                    System.out.println("2. 수강생 목록");
-                    System.out.println("3. 뒤로가기");
-                    studentInput = sc.nextLine();
-                    switch (studentInput) {
-                        case "1" -> studentService.addStudent(sc);
-                        case "2" -> studentService.printStudentList();
-                    }
-                }
-
-                case "2" -> {
-                    System.out.println("1. 수강생 과목별 시험 최차 및 점수 수정");
-                    System.out.println("2. 수강생 과목별 회차 점수 수정");
-                    System.out.println("3. 수강생 과목 회차별 등급 조회");
-                    System.out.println();
-                    studentInput = sc.nextLine();
-                    switch (studentInput) {
-                        case "1" -> scoreService.addScore(sc);
-                        case "2" -> {
-                            int studentId;
-                            int subjectId;
-                            int step;
-                            int mark;
-                            System.out.println("학생 아이디 입력");
-                            studentId = Integer.parseInt(sc.nextLine());
-                            System.out.println("과목 아이디 입력");
-                            subjectId = Integer.parseInt(sc.nextLine());
-                            System.out.println("회차 입력");
-                            step = Integer.parseInt(sc.nextLine());
-                            System.out.println("점수 입력");
-                            mark = Integer.parseInt(sc.nextLine());
-                            scoreService.editScore(studentId, subjectId, step, mark);
-                        }
-                        case "3" -> {
-                            System.out.println("studentId >");
-                            int studentId = Integer.parseInt(sc.nextLine());
-                            System.out.println("subjectId >");
-                            int subjectId = Integer.parseInt(sc.nextLine());
-                            Subject findSubject = subjectService.findById(subjectId);
-
-                            System.out.println(studentService.findById(studentId).getStudentName()
-                                    + " - " + findSubject.getSubjectName()
-                                    + " : " + findSubject.getSubjectType());
-                            Score findScore = scoreService.findBy2Id(studentId, subjectId);
-
-                            scoreService.printScore(findScore);
+            loopA:
+            while (true) {
+                switch (mainInput) {
+                    case "1" -> {
+                        System.out.println("=======수강생 관리=======");
+                        System.out.println("1. 수강생 등록");
+                        System.out.println("2. 수강생 목록");
+                        System.out.println("3. 뒤로가기");
+                        studentInput = sc.nextLine();
+                        switch (studentInput) {
+                            case "1" -> studentService.addStudent(sc);
+                            case "2" -> studentService.printStudentList();
+                            case "3" -> {
+                                break loopA;
+                            }
                         }
                     }
-                }
 
-                case "3" -> {
-                    return;
+                    case "2" -> {
+                        System.out.println("=======점수 관리=======");
+                        System.out.println("1. 수강생 과목별 시험 최차 및 점수 등록");
+                        System.out.println("2. 수강생 과목별 회차 점수 수정");
+                        System.out.println("3. 수강생 과목 회차별 등급 조회");
+                        System.out.println("4. 뒤로가기");
+                        System.out.println();
+                        studentInput = sc.nextLine();
+                        switch (studentInput) {
+                            case "1" -> scoreService.addScore(sc);
+                            case "2" -> {
+                                int studentId;
+                                int subjectId;
+                                int step;
+                                int mark;
+                                System.out.println("학생 아이디 입력");
+                                studentId = Integer.parseInt(sc.nextLine());
+                                System.out.println("과목 아이디 입력");
+                                subjectId = Integer.parseInt(sc.nextLine());
+                                System.out.println("회차 입력");
+                                step = Integer.parseInt(sc.nextLine());
+                                System.out.println("점수 입력");
+                                mark = Integer.parseInt(sc.nextLine());
+                                scoreService.editScore(studentId, subjectId, step, mark);
+                            }
+                            case "3" -> {
+                                System.out.println("studentId >");
+                                int studentId = Integer.parseInt(sc.nextLine());
+                                System.out.println("subjectId >");
+                                int subjectId = Integer.parseInt(sc.nextLine());
+                                Subject findSubject = subjectService.findById(subjectId);
+
+                                System.out.println(studentService.findById(studentId).getStudentName()
+                                        + " - " + findSubject.getSubjectName()
+                                        + " : " + findSubject.getSubjectType());
+                                Score findScore = scoreService.findBy2Id(studentId, subjectId);
+
+                                scoreService.printScore(findScore);
+                            }
+                            case "4" -> {
+                                break loopA;
+                            }
+                        }
+                    }
+
+                    case "3" -> {
+                        return;
+                    }
+                    case "4" -> {
+                        scoreService.allPrintScore();
+                        break loopA;
+                    }
                 }
             }
         }
     }
 
     public static void init(SubjectService subjectService, StudentService studentService, ScoreService scoreService) {
-        subjectService.save(new Subject("Java", REQUIRED));
-        subjectService.save(new Subject("객체지향", REQUIRED));
-        subjectService.save(new Subject("Spring", REQUIRED));
-        subjectService.save(new Subject("JPA", REQUIRED));
-        subjectService.save(new Subject("MySQL", REQUIRED));
+        System.out.println("초기값 생성");
 
-        subjectService.save(new Subject("디자인과 패턴", OPTION));
-        subjectService.save(new Subject("Spring Security", OPTION));
-        subjectService.save(new Subject("Redis", OPTION));
-        subjectService.save(new Subject("MongoDB", OPTION));
+        subjectService.save(new Subject("0.Java", REQUIRED));
+        subjectService.save(new Subject("1.객체지향", REQUIRED));
+        subjectService.save(new Subject("2.Spring", REQUIRED));
+        subjectService.save(new Subject("3.JPA", REQUIRED));
+        subjectService.save(new Subject("4.MySQL", REQUIRED));
+
+        subjectService.save(new Subject("5.디자인과 패턴", OPTION));
+        subjectService.save(new Subject("6.Spring Security", OPTION));
+        subjectService.save(new Subject("7.Redis", OPTION));
+        subjectService.save(new Subject("8.MongoDB", OPTION));
 
         studentService.save(new Student("서찬원", Set.of("Java", "Spring", "JPA", "MySQL", "Redis", "디자인과 패턴")));
         studentService.save(new Student("박세미", Set.of("Java", "객체지향", "JPA", "MySQL", "MongoDB", "Spring Security")));
@@ -130,8 +146,6 @@ public class Main {
                         }
                     }
                 }
-
-
             }
         }
 
