@@ -4,7 +4,6 @@ import model.*;
 import repository.ScoreRepository;
 
 import java.util.List;
-import java.util.Scanner;
 
 import static model.Grade.*;
 
@@ -41,7 +40,7 @@ public class ScoreService implements Service<Score> {
         System.out.println();
         System.out.print("등급   ");
         for (Grade grade : score.getGradeArr()) {
-            if(grade == null) System.out.print("x    ");
+            if (grade == null) System.out.print("x    ");
             else System.out.print(grade.getGrade() + "    ");
         }
         System.out.println();
