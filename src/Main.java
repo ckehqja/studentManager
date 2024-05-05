@@ -5,6 +5,7 @@ import service.ScoreService;
 import service.StudentService;
 import service.SubjectService;
 
+import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -17,10 +18,14 @@ public class Main {
 
     public static void main(String[] args) {
 
+        String studentName;
+        Set<String> subjectSet = new HashSet<>();
+
         int studentId;
         int subjectId;
         int step;
         int mark;
+
         Scanner sc = new Scanner(System.in);
         String mainInput;
         String studentInput;
@@ -49,7 +54,42 @@ public class Main {
                         System.out.println("3. 뒤로가기");
                         studentInput = sc.nextLine();
                         switch (studentInput) {
-                            case "1" -> studentService.addStudent(sc);
+                            case "1" -> {
+                                System.out.println("수강생 이름 >");
+                                studentName = sc.nextLine();
+                                boolean next = true;
+                                int requiredNum;
+                                while (subjectSet.size() < 3 || next) {
+                                    System.out.println("필수 3개 이상(번호 입력, 다음 n 입력)");
+                                    System.out.println("1. Java 2. 객체지향, 3. Spring, 4. JPA, 5. MySQL");
+                                    switch (sc.nextLine()) {
+                                        case "1" -> subjectSet.add("Java");
+                                        case "2" -> subjectSet.add("객체지향");
+                                        case "3" -> subjectSet.add("Spring");
+                                        case "4" -> subjectSet.add("Jpa");
+                                        case "5" -> subjectSet.add("MySQL");
+                                        case "n" -> next = false;
+                                        default -> System.out.println("잘못된 입력입니다. ");
+                                    }
+                                }
+                                next = true;
+                                requiredNum = subjectSet.size();
+
+                                while (subjectSet.size() - requiredNum < 2 || next) {
+                                    System.out.println("선택 2개 이상(번호 입력, 다음 n 입력)");
+                                    System.out.println("1. 디자인 패턴, 2. Spring Security, 3. Redis, 4. MongoDB");
+                                    switch (sc.nextLine()) {
+                                        case "1" -> subjectSet.add("디자인 패턴");
+                                        case "2" -> subjectSet.add("Spring Security");
+                                        case "3" -> subjectSet.add("Redis");
+                                        case "4" -> subjectSet.add("MongoDB");
+                                        case "n" -> next = false;
+                                        default -> System.out.println("잘못된 입력입니다.");
+                                    }
+                                }
+                                int saveStudentId = studentService.save(new Student(studentName, subjectSet));
+                                System.out.println(saveStudentId + ". " + studentName + "  등록되었습니다.");
+                            }
                             case "2" -> studentService.printStudentList();
                             case "3" -> {
                                 break loopA;
@@ -67,7 +107,7 @@ public class Main {
                         studentInput = sc.nextLine();
                         switch (studentInput) {
 
-                            case "1" -> {
+                            case "1", "2" -> {
                                 System.out.println("학생 아이디 입력");
                                 studentId = Integer.parseInt(sc.nextLine());
                                 System.out.println("과목 아이디 입력");
@@ -76,19 +116,11 @@ public class Main {
                                 step = Integer.parseInt(sc.nextLine());
                                 System.out.println("점수 입력");
                                 mark = Integer.parseInt(sc.nextLine());
-                                scoreService.addScore(studentId, subjectId, step, mark);
-                            }
-                            case "2" -> {
-
-                                System.out.println("학생 아이디 입력");
-                                studentId = Integer.parseInt(sc.nextLine());
-                                System.out.println("과목 아이디 입력");
-                                subjectId = Integer.parseInt(sc.nextLine());
-                                System.out.println("회차 입력");
-                                step = Integer.parseInt(sc.nextLine());
-                                System.out.println("점수 입력");
-                                mark = Integer.parseInt(sc.nextLine());
-                                scoreService.editScore(studentId, subjectId, step, mark);
+                                if (studentInput.equals("1")) {
+                                    scoreService.addScore(studentId, subjectId, step, mark);
+                                } else {
+                                    scoreService.editScore(studentId, subjectId, step, mark);
+                                }
                             }
                             case "3" -> {
                                 System.out.println("studentId >");
@@ -122,6 +154,7 @@ public class Main {
         }
     }
 
+    //초기 테스트 데이터
     public static void init(SubjectService subjectService, StudentService studentService, ScoreService scoreService) {
         System.out.println("초기값 생성");
 
