@@ -23,7 +23,6 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         String mainInput;
         String studentInput;
-        String scoreInput;
 
         init(subjectService, studentService, scoreService);
 
@@ -115,11 +114,11 @@ public class Main {
         for (int i = 0; i < 5; i++) {//사용자 아이디
             for (int j = 0; j < 9; j++) {//과목 아이디
                 for (int k = 1; k < 11; k++) {//회차
-                    int score = (int) (Math.random() * 40) + 50;
+                    int mark = (int) (Math.random() * 40) + 50;
                     scoreService.save(new Score(i, j));
                     scoreService.save(new Score(i, j));
                     Score findScore = scoreService.findBy2Id(i, j);
-                    scoreService.setStepScore(findScore,k, score );
+                    scoreService.setStepScore(findScore,k, mark );
                 }
             }
         }

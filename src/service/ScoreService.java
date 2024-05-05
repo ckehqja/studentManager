@@ -35,12 +35,12 @@ public class ScoreService implements Service<Score> {
         }
         System.out.println();
         System.out.print("점수   ");
-        for (int scoreO : score.getScore()) {
-            System.out.print(scoreO + "   ");
+        for (int mark : score.getMarkArr()) {
+            System.out.print(mark + "   ");
         }
         System.out.println();
         System.out.print("등급   ");
-        for (Grade grade : score.getGrade()) {
+        for (Grade grade : score.getGradeArr()) {
             System.out.print(grade.getGrade() + "    ");
         }
         System.out.println();
@@ -51,7 +51,7 @@ public class ScoreService implements Service<Score> {
         int studentId = 0;
         int subjectId = 0;
         int step;
-        int score;
+        int mark;
         Student findStudent = null;
         Subject findSubject = null;
         while (true) {
@@ -85,8 +85,8 @@ public class ScoreService implements Service<Score> {
                     if (step > 0 && step <= 10) {
                         System.out.println("점수를 입력하세요>");
                         try {
-                            score = Integer.parseInt(sc.nextLine());
-                            if (score >= 0 && score <= 100) break;
+                            mark = Integer.parseInt(sc.nextLine());
+                            if (mark >= 0 && mark <= 100) break;
                             else System.out.println("0 ~ 100 사이 정수 입력하세요!!!");
                         } catch (NumberFormatException e) {
                             System.out.println("정수만 입력하세요 !!!");
@@ -103,56 +103,56 @@ public class ScoreService implements Service<Score> {
         if (list.isEmpty()) {
             int saveId = repository.save(new Score(studentId, subjectId));
             Score findScore = repository.findById(saveId);
-            setStepScore(findScore, step, score);
+            setStepScore(findScore, step, mark);
             System.out.println("새로운 점수를 만들어 추가하였습니다.");
         } else {
             for (Score listScore : list) {
                 if (listScore.getSubjectId() == findSubject.getId() &&
                         listScore.getStudentId() == findStudent.getId()) {
-                    listScore.getScore()[step - 1] = score;
-                    listScore.getGrade()[step - 1] = setGrade(subjectId, score);
+                    listScore.getMarkArr()[step - 1] = mark;
+                    listScore.getGradeArr()[step - 1] = setGrade(subjectId, mark);
                     System.out.println("기존 점수에 추가하였습니다. ");
                 } else {
                     int saveId = repository.save(new Score(studentId, subjectId));
                     Score findScore = repository.findById(saveId);
-                    findScore.getScore()[step - 1] = score;
-                    findScore.getGrade()[step - 1] = setGrade(subjectId, score);
+                    findScore.getMarkArr()[step - 1] = mark;
+                    findScore.getGradeArr()[step - 1] = setGrade(subjectId, mark);
                     System.out.println("새로운 점수를 만들어 추가하였습니다.");
                 }
             }
         }
     }
 
-    public void editScore(int studentId, int subjectId, int step, int score) {
+    public void editScore(int studentId, int subjectId, int step, int mark) {
         List<Score> scoreList = repository.getList();
         for (Score inScore : scoreList) {
             if (inScore.getStudentId() == studentId && inScore.getSubjectId() == subjectId) {
-                setStepScore(inScore, step, score);
+                setStepScore(inScore, step, mark);
             }
         }
     }
 
-    public Grade setGrade(int subjectId, int score) {
+    public Grade setGrade(int subjectId, int mark) {
         Subject findSubject = subjectService.findById(subjectId);
         if (findSubject.getSubjectType() == SubjectType.REQUIRED) {
-            if (score >= 95) return A;
-            else if (score >= 90) return B;
-            else if (score >= 80) return C;
-            else if (score >= 70) return D;
-            else if (score >= 60) return F;
+            if (mark >= 95) return A;
+            else if (mark >= 90) return B;
+            else if (mark >= 80) return C;
+            else if (mark >= 70) return D;
+            else if (mark >= 60) return F;
             else return N;
         } else {
-            if (score >= 90) return A;
-            else if (score >= 80) return B;
-            else if (score >= 70) return C;
-            else if (score >= 60) return D;
-            else if (score >= 50) return F;
+            if (mark >= 90) return A;
+            else if (mark >= 80) return B;
+            else if (mark >= 70) return C;
+            else if (mark >= 60) return D;
+            else if (mark >= 50) return F;
             else return N;
         }
     }
 
     public void setStepScore(Score score, int step, int mark) {
-        score.getScore()[step - 1] = mark;
-        score.getGrade()[step - 1] = setGrade(score.getSubjectId(), mark);
+        score.getMarkArr()[step - 1] = mark;
+        score.getGradeArr()[step - 1] = setGrade(score.getSubjectId(), mark);
     }
 }
