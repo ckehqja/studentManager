@@ -48,79 +48,18 @@ public class ScoreService implements Service<Score> {
         System.out.println();
     }
 
-    public void addScore(Scanner sc) {
-        int studentId = 0;
-        int subjectId = 0;
-        int step;
-        int mark;
-        Student findStudent = null;
-        Subject findSubject = null;
-        while (true) {
-            System.out.println("수강생 아이디를 입력하세요>");
-            try {
-                studentId = Integer.parseInt(sc.nextLine());
-                System.out.println(studentId);
-                findStudent = studentService.findById(studentId);
-            } catch (NumberFormatException e) {
-                System.out.println("정수만 입력하세요 !!!");
-            }
-            if (findStudent != null) {
-                System.out.println(findStudent.getStudentName() + " 수강생 입니다.");
-                break;
-            }
-            System.out.println("잘못된 값입니다.");
-        }
-        while (true) {
-            System.out.println("과목 아이디를 입력하세요>");
-            try {
-                subjectId = Integer.parseInt(sc.nextLine());
-                findSubject = subjectService.findById(subjectId);
-            } catch (NumberFormatException e) {
-                System.out.println("정수만 입력하세요 !!!");
-            }
-            if (findSubject != null) {
-                System.out.println(findSubject.getSubjectName() + " 과목입니다.");
-                System.out.println("회차(1~10) 범위를 적으세요");
-                try {
-                    step = Integer.parseInt(sc.nextLine());
-                    if (step > 0 && step <= 10) {
-                        System.out.println("점수를 입력하세요>");
-                        try {
-                            mark = Integer.parseInt(sc.nextLine());
-                            if (mark >= 0 && mark <= 100) break;
-                            else System.out.println("0 ~ 100 사이 정수 입력하세요!!!");
-                        } catch (NumberFormatException e) {
-                            System.out.println("정수만 입력하세요 !!!");
-                        }
-                    } else {
-                        System.out.println("1 ~ 10 사이 정수 입력하세요!!!");
-                    }
-                } catch (NumberFormatException e) {
-                    System.out.println("정수만 입력하세요 !!!");
-                }
-            }
-        }
-        List<Score> list = repository.getList();
-        if (list.isEmpty()) {
-            int saveId = repository.save(new Score(studentId, subjectId));
-            Score findScore = repository.findById(saveId);
+    public void addScore(int studentId, int subjectId, int step, int mark) {
+        Score findScore = repository.findBy2Id(studentId, subjectId);
+        if (findScore == null) {
+            Score score = new Score(studentId, subjectId);
+            save(score);
+            setStepScore(score, step, mark);
+            System.out.println("새로운 점수를 만듭니다.");
+        } else if (findScore.getGradeArr()[step - 1] == null) {
             setStepScore(findScore, step, mark);
-            System.out.println("새로운 점수를 만들어 추가하였습니다.");
+            System.out.println("기존 점수에서 추가합니다.");
         } else {
-            for (Score score : list) {
-                if (score.getSubjectId() == findSubject.getId() &&
-                        score.getStudentId() == findStudent.getId()) {
-                    score.getMarkArr()[step - 1] = mark;
-                    score.getGradeArr()[step - 1] = setGrade(subjectId, mark);
-                    System.out.println("기존 점수에 추가하였습니다. ");
-                } else {
-                    int saveId = repository.save(new Score(studentId, subjectId));
-                    Score findScore = repository.findById(saveId);
-                    findScore.getMarkArr()[step - 1] = mark;
-                    findScore.getGradeArr()[step - 1] = setGrade(subjectId, mark);
-                    System.out.println("새로운 점수를 만들어 추가하였습니다.");
-                }
-            }
+            System.out.println("이미 점수를 추가했습니다. 변경에서 수정하세요");
         }
     }
 

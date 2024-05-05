@@ -16,13 +16,18 @@ import static model.SubjectType.REQUIRED;
 public class Main {
 
     public static void main(String[] args) {
-        SubjectService subjectService = new SubjectService();
-        StudentService studentService = new StudentService();
-        ScoreService scoreService = new ScoreService();
 
+        int studentId;
+        int subjectId;
+        int step;
+        int mark;
         Scanner sc = new Scanner(System.in);
         String mainInput;
         String studentInput;
+
+        SubjectService subjectService = new SubjectService();
+        StudentService studentService = new StudentService();
+        ScoreService scoreService = new ScoreService();
 
         init(subjectService, studentService, scoreService);
 
@@ -61,12 +66,20 @@ public class Main {
                         System.out.println();
                         studentInput = sc.nextLine();
                         switch (studentInput) {
-                            case "1" -> scoreService.addScore(sc);
+
+                            case "1" -> {
+                                System.out.println("학생 아이디 입력");
+                                studentId = Integer.parseInt(sc.nextLine());
+                                System.out.println("과목 아이디 입력");
+                                subjectId = Integer.parseInt(sc.nextLine());
+                                System.out.println("회차 입력");
+                                step = Integer.parseInt(sc.nextLine());
+                                System.out.println("점수 입력");
+                                mark = Integer.parseInt(sc.nextLine());
+                                scoreService.addScore(studentId, subjectId, step, mark);
+                            }
                             case "2" -> {
-                                int studentId;
-                                int subjectId;
-                                int step;
-                                int mark;
+
                                 System.out.println("학생 아이디 입력");
                                 studentId = Integer.parseInt(sc.nextLine());
                                 System.out.println("과목 아이디 입력");
@@ -79,9 +92,9 @@ public class Main {
                             }
                             case "3" -> {
                                 System.out.println("studentId >");
-                                int studentId = Integer.parseInt(sc.nextLine());
+                                studentId = Integer.parseInt(sc.nextLine());
                                 System.out.println("subjectId >");
-                                int subjectId = Integer.parseInt(sc.nextLine());
+                                subjectId = Integer.parseInt(sc.nextLine());
                                 Subject findSubject = subjectService.findById(subjectId);
 
                                 System.out.println(studentService.findById(studentId).getStudentName()
@@ -112,16 +125,16 @@ public class Main {
     public static void init(SubjectService subjectService, StudentService studentService, ScoreService scoreService) {
         System.out.println("초기값 생성");
 
-        subjectService.save(new Subject("0.Java", REQUIRED));
-        subjectService.save(new Subject("1.객체지향", REQUIRED));
-        subjectService.save(new Subject("2.Spring", REQUIRED));
-        subjectService.save(new Subject("3.JPA", REQUIRED));
-        subjectService.save(new Subject("4.MySQL", REQUIRED));
+        subjectService.save(new Subject("Java", REQUIRED));
+        subjectService.save(new Subject("객체지향", REQUIRED));
+        subjectService.save(new Subject("Spring", REQUIRED));
+        subjectService.save(new Subject("JPA", REQUIRED));
+        subjectService.save(new Subject("MySQL", REQUIRED));
 
-        subjectService.save(new Subject("5.디자인과 패턴", OPTION));
-        subjectService.save(new Subject("6.Spring Security", OPTION));
-        subjectService.save(new Subject("7.Redis", OPTION));
-        subjectService.save(new Subject("8.MongoDB", OPTION));
+        subjectService.save(new Subject("디자인과 패턴", OPTION));
+        subjectService.save(new Subject("Spring Security", OPTION));
+        subjectService.save(new Subject("Redis", OPTION));
+        subjectService.save(new Subject("MongoDB", OPTION));
 
         studentService.save(new Student("서찬원", Set.of("Java", "Spring", "JPA", "MySQL", "Redis", "디자인과 패턴")));
         studentService.save(new Student("박세미", Set.of("Java", "객체지향", "JPA", "MySQL", "MongoDB", "Spring Security")));
