@@ -28,9 +28,9 @@ public class ScoreService implements Service<Score> {
     }
 
     public void printScore(Score score) {
-        System.out.print("회차   ");
+        System.out.print("회차");
         for (int i = 1; i < 11; i++) {
-            System.out.print(i + "    ");
+            System.out.printf("%5d", i);
         }
         System.out.println();
         System.out.print("점수");
@@ -38,10 +38,10 @@ public class ScoreService implements Service<Score> {
             System.out.printf("%5d", mark);
         }
         System.out.println();
-        System.out.print("등급   ");
+        System.out.print("등급");
         for (Grade grade : score.getGradeArr()) {
-            if (grade == null) System.out.print("x    ");
-            else System.out.print(grade.getGrade() + "    ");
+            if (grade == null) System.out.printf("%5c", 'x');
+            else System.out.printf("%5c", grade.getGrade());
         }
         System.out.println();
         System.out.println();
@@ -63,12 +63,15 @@ public class ScoreService implements Service<Score> {
     }
 
     public void editScore(int studentId, int subjectId, int step, int mark) {
+        boolean display = true;
         List<Score> scoreList = repository.getList();
         for (Score inScore : scoreList) {
             if (inScore.getStudentId() == studentId && inScore.getSubjectId() == subjectId) {
                 setStepScore(inScore, step, mark);
+                display = false;
             }
         }
+        if(display) System.out.println("존재하지 않는 수강생 아이디 또는 과목 아이디 !!");
     }
 
     public Grade setGrade(int subjectId, int mark) {

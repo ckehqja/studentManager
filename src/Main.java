@@ -112,10 +112,19 @@ public class Main {
                                 studentId = Integer.parseInt(sc.nextLine());
                                 System.out.println("과목 아이디 입력");
                                 subjectId = Integer.parseInt(sc.nextLine());
-                                System.out.println("회차 입력");
-                                step = Integer.parseInt(sc.nextLine());
-                                System.out.println("점수 입력");
-                                mark = Integer.parseInt(sc.nextLine());
+
+                                while(true) {
+                                    System.out.println("1~10회차 입력");
+                                    step = Integer.parseInt(sc.nextLine());
+                                    if (step >= 1 && step <= 10) break;
+                                    else System.out.println("다시 입력!!!");
+                                }
+                                while(true) {
+                                    System.out.println("점수 입력");
+                                    mark = Integer.parseInt(sc.nextLine());
+                                    if (mark >= 0 && mark <= 100) break;
+                                    else System.out.println("다시 입력!!!");
+                                }
                                 if (studentInput.equals("1")) {
                                     scoreService.addScore(studentId, subjectId, step, mark);
                                 } else {
