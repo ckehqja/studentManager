@@ -1,6 +1,7 @@
 package model;
 
 import lombok.Getter;
+import model.enums.SubjectType;
 
 @Getter
 public class Subject implements CreateModel {
