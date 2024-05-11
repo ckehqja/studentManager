@@ -55,7 +55,7 @@ public class ScoreService implements Service<Score> {
     }
 
     /**
-     *점수를 등록하는 메서드
+     *점수를 등록하는 메서드ㅇㅇ
      * 같은 회차 중복 등록 안되며 회차 순서되로 입력을 해야한다.
      * 주의사항 step 은 항상 -1을 해주어야 한다.
      */
