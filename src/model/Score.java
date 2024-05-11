@@ -1,20 +1,27 @@
 package model;
 
-public class Score implements AutoId {
-    private static int staticId = 0;
-    private int scoreId = 0;
-    private int studentId;
-    private int step;
-    private int score;
-    private Grade grade;
+import lombok.Getter;
+import model.enums.Grade;
+
+@Getter
+public class Score implements CreateModel {
+    private final int subjectId;
+    private final int studentId;
+    private final int STEP = 10;//1~10
+    private final int[] markArr = new int[STEP];//0~100
+    private final Grade[] gradeArr = new Grade[STEP];
+
+    public Score(int studentId, int subjectId) {
+        this.subjectId = subjectId;
+        this.studentId = studentId;
+    }
 
     @Override
-    public void creatAutoId() {
-        scoreId = staticId++;
+    public void create() {
     }
 
     @Override
     public int getId() {
-        return scoreId;
+        return 0;
     }
 }
