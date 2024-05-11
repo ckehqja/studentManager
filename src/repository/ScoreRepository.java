@@ -31,6 +31,11 @@ public class ScoreRepository implements Repository<Score> {
     }
 
     @Override
+    public boolean delete(int id) {
+        return scoreList.remove(id) != null;
+    }
+
+    @Override
     public List<Score> getList() {
         return scoreList;
     }

@@ -21,6 +21,11 @@ public class StudentRepository implements Repository<Student> {
     }
 
     @Override
+    public boolean delete(int id) {
+        return studentList.remove(id) != null;
+    }
+
+    @Override
     public List<Student> getList() {
         return studentList;
     }

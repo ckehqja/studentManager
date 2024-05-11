@@ -22,6 +22,11 @@ public class SubjectRepository implements Repository<Subject> {
     }
 
     @Override
+    public boolean delete(int id) {
+        return subjectList.remove(id) != null;
+    }
+
+    @Override
     public List<Subject> getList() {
         return subjectList;
     }

@@ -9,9 +9,9 @@ import static model.Grade.*;
 
 public class ScoreService implements Service<Score> {
 
-    private static final ScoreRepository repository = new ScoreRepository();
-    private static final StudentService studentService = new StudentService();
-    private static final SubjectService subjectService = new SubjectService();
+    private final ScoreRepository repository = new ScoreRepository();
+    private final StudentService studentService = new StudentService();
+    private final SubjectService subjectService = new SubjectService();
 
     @Override
     public int save(Score score) {
@@ -21,6 +21,11 @@ public class ScoreService implements Service<Score> {
     @Override
     public Score findById(int id) {
         return repository.findById(id);
+    }
+
+    @Override
+    public boolean delete(int id) {
+        return repository.delete(id);
     }
 
     public Score findBy2Id(int studentId, int subjectId) {
