@@ -1,20 +1,16 @@
 package model;
 
 import lombok.Getter;
-import lombok.Setter;
-import model.enums.StudentStatus;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
-public class Student implements CreateModel {
+public class Student implements AutoId {
     private static int staticId = 0;
     private int studentId;
-    @Setter
     private String studentName;
-    private final Set<String> subjectSet;
-    @Setter
-    private StudentStatus studentStatus;//기본값 지정
+    private Set<String> subjectSet = new HashSet<>();
 
     public Student(String studentName, Set<String> subjectSet) {
         this.studentName = studentName;
@@ -22,7 +18,7 @@ public class Student implements CreateModel {
     }
 
     @Override
-    public void create() {
+    public void creatAutoId() {
         studentId = staticId++;
     }
 

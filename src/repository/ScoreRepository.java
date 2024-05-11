@@ -7,32 +7,18 @@ import java.util.List;
 
 public class ScoreRepository implements Repository<Score> {
 
-    private static final List<Score> scoreList = new ArrayList<>();
+    private final List<Score> scoreList = new ArrayList<>();
 
     @Override
     public Score findById(int id) {
         return scoreList.get(id);
     }
 
-    public Score findBy2Id(int studentId, int subjectId) {
-        for (Score score : scoreList) {
-            if(score.getStudentId() == studentId && score.getSubjectId() == subjectId) {
-                return score;
-            }
-        }
-        return null;
-    }
-
     @Override
     public int save(Score score) {
         scoreList.add(score);
-        score.create();
+        score.creatAutoId();
         return score.getId();
-    }
-
-    @Override
-    public boolean delete(int id) {
-        return scoreList.remove(id) != null;
     }
 
     @Override
