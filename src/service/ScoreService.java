@@ -1,6 +1,8 @@
 package service;
 
-import model.*;
+import model.Score;
+import model.Student;
+import model.Subject;
 import model.enums.Grade;
 import model.enums.SubjectType;
 import repository.ScoreRepository;
@@ -55,7 +57,7 @@ public class ScoreService implements Service<Score> {
     }
 
     /**
-     *점수를 등록하는 메서드ㅇㅇ
+     * 점수를 등록하는 메서드ㅇㅇ
      * 같은 회차 중복 등록 안되며 회차 순서되로 입력을 해야한다.
      * 주의사항 step 은 항상 -1을 해주어야 한다.
      */
@@ -72,7 +74,7 @@ public class ScoreService implements Service<Score> {
         } else {
             if (findScore == null) System.out.println("1회차부터 입력하세요!!");
             else if (findScore.getGradeArr()[step - 2] != null
-                    && findScore.getGradeArr()[step -1] == null) {
+                    && findScore.getGradeArr()[step - 1] == null) {
                 setStepScore(findScore, step, mark);
                 System.out.println("점수를 추가합니다.");
             } else {
@@ -87,7 +89,7 @@ public class ScoreService implements Service<Score> {
         for (Score inScore : scoreList) {
             if (isScoreSameStudentIdAndSubjectId(studentId, subjectId, inScore)) {
                 //1회차를 수정하거나 전회차에 점수가 있는 경우에만 수정 가능
-                if (step != 1 || inScore.getGradeArr()[step] != null) {
+                if (inScore.getGradeArr()[step - 1] != null) {
                     setStepScore(inScore, step, mark);
                 } else {
                     System.out.println("점수가 등록된 회차만 수정이 가능합니다.");
