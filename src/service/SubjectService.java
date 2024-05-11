@@ -8,7 +8,7 @@ import java.util.List;
 
 public class SubjectService implements Service<Subject> {
 
-    private static final Repository<Subject> repository = new SubjectRepository();
+    private final Repository<Subject> repository = new SubjectRepository();
 
     @Override
     public int save(Subject subject) {
@@ -18,6 +18,11 @@ public class SubjectService implements Service<Subject> {
     @Override
     public Subject findById(int id) {
         return repository.findById(id);
+    }
+
+    @Override
+    public boolean delete(int id) {
+        return repository.delete(id);
     }
 
     public void printSubjectList() {
