@@ -1,13 +1,12 @@
 package service;
 
 import model.*;
-import model.enums.Grade;
-import model.enums.SubjectType;
 import repository.ScoreRepository;
 
 import java.util.List;
 
-import static model.enums.Grade.*;
+import static model.Grade.*;
+
 
 public class ScoreService implements Service<Score> {
 
@@ -75,7 +74,7 @@ public class ScoreService implements Service<Score> {
         for (Score inScore : scoreList) {
             if (isScoreSameStudentIdAndSubjectId(studentId, subjectId, inScore)) {
                 //1회차를 수정하거나 전회차에 점수가 있는 경우에만 수정 가능
-                if (step != 1 || inScore.getGradeArr()[step - 1] != null) {
+                if (inScore.getGradeArr()[step - 1] != null) {
                     setStepScore(inScore, step, mark);
                 } else {
                     System.out.println("점수가 등록된 회차만 수정이 가능합니다.");
