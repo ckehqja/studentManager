@@ -54,18 +54,30 @@ public class ScoreService implements Service<Score> {
         System.out.println();
     }
 
+    /**
+     *점수를 등록하는 메서드
+     * 같은 회차 중복 등록 안되며 회차 순서되로 입력을 해야한다.
+     * 주의사항 step 은 항상 -1을 해주어야 한다.
+     */
     public void addScore(int studentId, int subjectId, int step, int mark) {
         Score findScore = repository.findBy2Id(studentId, subjectId);
-        if (findScore == null) {
+
+        if (step == 1 && findScore == null) {
             Score score = new Score(studentId, subjectId);
             save(score);
             setStepScore(score, step, mark);
             System.out.println("새로운 점수를 만듭니다.");
-        } else if (findScore.getGradeArr()[step - 1] == null) {
-            setStepScore(findScore, step, mark);
-            System.out.println("기존 점수에서 추가합니다.");
+        } else if (step == 1) {
+            System.out.println("이미 등록외었습니다.");
         } else {
-            System.out.println("이미 점수를 추가했습니다. 변경에서 수정하세요");
+            if (findScore == null) System.out.println("1회차부터 입력하세요!!");
+            else if (findScore.getGradeArr()[step - 2] != null
+                    && findScore.getGradeArr()[step -1] == null) {
+                setStepScore(findScore, step, mark);
+                System.out.println("점수를 추가합니다.");
+            } else {
+                System.out.println("이미 점수를 입력했거나 차례대로 입력하세요!!");
+            }
         }
     }
 
@@ -75,7 +87,7 @@ public class ScoreService implements Service<Score> {
         for (Score inScore : scoreList) {
             if (isScoreSameStudentIdAndSubjectId(studentId, subjectId, inScore)) {
                 //1회차를 수정하거나 전회차에 점수가 있는 경우에만 수정 가능
-                if (step != 1 || inScore.getGradeArr()[step - 1] != null) {
+                if (step != 1 || inScore.getGradeArr()[step] != null) {
                     setStepScore(inScore, step, mark);
                 } else {
                     System.out.println("점수가 등록된 회차만 수정이 가능합니다.");
