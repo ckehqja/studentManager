@@ -1,6 +1,7 @@
 package model;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Set;
 
@@ -8,8 +9,11 @@ import java.util.Set;
 public class Student implements CreateModel {
     private static int staticId = 0;
     private int studentId;
-    private final String studentName;
-    private final Set<String> subjectSet ;
+    @Setter
+    private String studentName;
+    private final Set<String> subjectSet;
+    @Setter
+    private StudentStatus studentStatus;//기본값 지정
 
     public Student(String studentName, Set<String> subjectSet) {
         this.studentName = studentName;
