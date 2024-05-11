@@ -2,7 +2,7 @@ package service;
 
 import model.Score;
 import model.Student;
-import model.StudentStatus;
+import model.enums.StudentStatus;
 import repository.Repository;
 import repository.ScoreRepository;
 import repository.StudentRepository;

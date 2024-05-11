@@ -1,6 +1,7 @@
 package model;
 
 import lombok.Getter;
+import model.enums.Grade;
 
 @Getter
 public class Score implements CreateModel {

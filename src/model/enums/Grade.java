@@ -1,4 +1,4 @@
-package model;
+package model.enums;
 
 public enum Grade {
     A('A'), B('B'), C('C'), D('D'), F('F'), N('N');

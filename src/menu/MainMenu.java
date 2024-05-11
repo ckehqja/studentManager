@@ -10,8 +10,8 @@ import service.SubjectService;
 import java.util.Scanner;
 import java.util.Set;
 
-import static model.SubjectType.OPTION;
-import static model.SubjectType.REQUIRED;
+import static model.enums.SubjectType.OPTION;
+import static model.enums.SubjectType.REQUIRED;
 
 public class MainMenu {
 

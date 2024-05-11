@@ -1,11 +1,13 @@
 package service;
 
 import model.*;
+import model.enums.Grade;
+import model.enums.SubjectType;
 import repository.ScoreRepository;
 
 import java.util.List;
 
-import static model.Grade.*;
+import static model.enums.Grade.*;
 
 public class ScoreService implements Service<Score> {
 
@@ -71,12 +73,23 @@ public class ScoreService implements Service<Score> {
         boolean display = true;
         List<Score> scoreList = repository.getList();
         for (Score inScore : scoreList) {
-            if (inScore.getStudentId() == studentId && inScore.getSubjectId() == subjectId) {
-                setStepScore(inScore, step, mark);
+            if (isScoreSameStudentIdAndSubjectId(studentId, subjectId, inScore)) {
+                //1회차를 수정하거나 전회차에 점수가 있는 경우에만 수정 가능
+                if (step != 1 || inScore.getGradeArr()[step - 1] != null) {
+                    setStepScore(inScore, step, mark);
+                } else {
+                    System.out.println("점수가 등록된 회차만 수정이 가능합니다.");
+                }
                 display = false;
             }
         }
-        if(display) System.out.println("존재하지 않는 수강생 아이디 또는 과목 아이디 !!");
+        if (display) System.out.println("존재하지 않는 수강생 아이디 또는 과목 아이디 !!");
+        else System.out.printf("%d / %d / %d회차 %d점으로 변경되었습니다.", studentId, subjectId, step, mark);
+    }
+
+
+    private static boolean isScoreSameStudentIdAndSubjectId(int studentId, int subjectId, Score inScore) {
+        return inScore.getStudentId() == studentId && inScore.getSubjectId() == subjectId;
     }
 
     public Grade setGrade(int subjectId, int mark) {
