@@ -7,7 +7,7 @@ import java.util.List;
 
 public class SubjectRepository implements Repository<Subject> {
 
-    private static final List<Subject> subjectList = new ArrayList<>();
+    private final List<Subject> subjectList = new ArrayList<>();
 
     @Override
     public Subject findById(int id) {
@@ -17,13 +17,8 @@ public class SubjectRepository implements Repository<Subject> {
     @Override
     public int save(Subject subject) {
         subjectList.add(subject);
-        subject.create();
+        subject.creatAutoId();
         return subject.getId();
-    }
-
-    @Override
-    public boolean delete(int id) {
-        return subjectList.remove(id) != null;
     }
 
     @Override

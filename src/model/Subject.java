@@ -1,14 +1,10 @@
 package model;
 
-import lombok.Getter;
-import model.enums.SubjectType;
-
-@Getter
-public class Subject implements CreateModel {
+public class Subject implements AutoId{
     private static int staticId = 0;
      private int subjectId;
-    private final String subjectName;
-    private final SubjectType subjectType;
+    private String subjectName;
+    private SubjectType subjectType;
 
     public Subject(String subjectName, SubjectType subjectType) {
         this.subjectName = subjectName;
@@ -16,7 +12,7 @@ public class Subject implements CreateModel {
     }
 
     @Override
-    public void create() {
+    public void creatAutoId() {
         subjectId = staticId++;
     }
 
