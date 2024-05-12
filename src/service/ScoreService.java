@@ -1,12 +1,19 @@
 package service;
 
-import model.*;
+import model.Score;
+import model.Student;
+import model.Subject;
 import model.enums.Grade;
+import model.enums.StudentStatus;
 import model.enums.SubjectType;
 import repository.ScoreRepository;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
+import static java.lang.StringTemplate.*;
 import static model.enums.Grade.*;
 
 public class ScoreService implements Service<Score> {
@@ -55,7 +62,7 @@ public class ScoreService implements Service<Score> {
     }
 
     /**
-     *점수를 등록하는 메서드
+     * 점수를 등록하는 메서드ㅇㅇ
      * 같은 회차 중복 등록 안되며 회차 순서되로 입력을 해야한다.
      * 주의사항 step 은 항상 -1을 해주어야 한다.
      */
@@ -72,7 +79,7 @@ public class ScoreService implements Service<Score> {
         } else {
             if (findScore == null) System.out.println("1회차부터 입력하세요!!");
             else if (findScore.getGradeArr()[step - 2] != null
-                    && findScore.getGradeArr()[step -1] == null) {
+                    && findScore.getGradeArr()[step - 1] == null) {
                 setStepScore(findScore, step, mark);
                 System.out.println("점수를 추가합니다.");
             } else {
@@ -87,7 +94,7 @@ public class ScoreService implements Service<Score> {
         for (Score inScore : scoreList) {
             if (isScoreSameStudentIdAndSubjectId(studentId, subjectId, inScore)) {
                 //1회차를 수정하거나 전회차에 점수가 있는 경우에만 수정 가능
-                if (step != 1 || inScore.getGradeArr()[step] != null) {
+                if (inScore.getGradeArr()[step - 1] != null) {
                     setStepScore(inScore, step, mark);
                 } else {
                     System.out.println("점수가 등록된 회차만 수정이 가능합니다.");
@@ -140,9 +147,44 @@ public class ScoreService implements Service<Score> {
             Student findStudent = studentService.findById(studentId);
             int subjectId = score.getSubjectId();
             Subject findSubject = subjectService.findById(subjectId);
-            System.out.println(findStudent.getStudentName() + " - " + findSubject.getSubjectName()
-                    + " - " + findSubject.getSubjectType());
+            System.out.println(STR."\{findStudent.getStudentName()} - \{findSubject.getSubjectName()} - \{findSubject.getSubjectType()}");
             printScore(score);
+        }
+    }
+
+    public void averageGradeBySubject(int studentId) {
+        Student findStudent = studentService.findById(studentId);
+        Set<String> findStudentSubjectSet = findStudent.getSubjectSet();
+        //과목 이름을 받아서 아이디로 변경
+        ArrayList<Integer> subjectIdList = subjectService.subjectNameAsId(findStudentSubjectSet);
+        for (Integer subjectId : subjectIdList) {
+            Score findScore = findBy2Id(studentId, subjectId);
+            String subjectName = subjectService.getName(subjectId);
+            double subjectAvg = Arrays.stream(findScore.getMarkArr()).average().getAsDouble();
+            System.out.println(STR."\{subjectName} : \{subjectAvg} - \{setGrade(subjectId, (int) subjectAvg)}");
+        }
+    }
+    public void averageGradeBySubject(int studentId, SubjectType subjectType) {
+        Student findStudent = studentService.findById(studentId);
+        Set<String> findStudentSubjectSet = findStudent.getSubjectSet();
+        //과목 이름을 받아서 아이디로 변경
+        ArrayList<Integer> subjectIdList = subjectService.subjectNameAsId(findStudentSubjectSet);
+        for (Integer subjectId : subjectIdList) {
+            Subject findSubject = subjectService.findById(subjectId);
+            if(findSubject.getSubjectType() == subjectType) {
+                Score findScore = findBy2Id(studentId, subjectId);
+                String subjectName = subjectService.getName(subjectId);
+                double subjectAvg = Arrays.stream(findScore.getMarkArr()).average().getAsDouble();
+                System.out.println(STR."\{subjectName} : \{subjectAvg} - \{setGrade(subjectId, (int) subjectAvg)}");
+            }
+        }
+    }
+
+    public void averageGradeByStatus(StudentStatus findStatus) {
+        List<Student> findStudentList = studentService.getStudentByStatus(findStatus);
+        for (Student student : findStudentList) {
+            System.out.println(STR."name : \{student.getStudentName()}");
+            averageGradeBySubject(student.getStudentId(), SubjectType.REQUIRED);
         }
     }
 }

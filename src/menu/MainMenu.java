@@ -15,8 +15,6 @@ import static model.enums.SubjectType.REQUIRED;
 
 public class MainMenu {
 
-    static final String SUBJECT_ID = "과목 아이디";
-
     public static void display() {
 
         Scanner sc = new Scanner(System.in);
@@ -108,13 +106,13 @@ public class MainMenu {
                         scoreService.save(new Score(i, j));
                         Score findScore = scoreService.findBy2Id(i, j);
                         for (int k = 1; k < 11; k++) {//회차
-                            int mark = (int) (Math.random() * 40) + 50;
+                            int mark = (int) (Math.random() * 30) + 70;
                             scoreService.setStepScore(findScore, k, mark);
                         }
                     }
                 }
                 int status = (int) (Math.random() * 3) + 1;
-                studentService.setStudentStatus(i, status + "");
+                studentService.setStudentStatus(i, STR."\{status}");
             }
         }
     }
