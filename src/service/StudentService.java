@@ -55,13 +55,17 @@ public class StudentService implements Service<Student> {
 
     public void setStudentStatus(int id, String status) {
         Student findStudent = repository.findById(id);
-        studentStatus = switch (status) {
+        studentStatus = statusStringChangeEnum(status);
+        findStudent.setStudentStatus(studentStatus);
+    }
+
+    public StudentStatus statusStringChangeEnum(String status) {
+        return switch (status) {
             case "1" -> StudentStatus.GREEN;
             case "2" -> StudentStatus.RED;
             case "3" -> StudentStatus.YELLOW;
             default -> null;
         };
-        findStudent.setStudentStatus(studentStatus);
     }
 
     /**
@@ -69,18 +73,16 @@ public class StudentService implements Service<Student> {
      */
     public void printStudentByStatus(String status) {
         List<Student> list = repository.getList();
-        studentStatus = switch (status) {
-            case "1" -> StudentStatus.GREEN;
-            case "2" -> StudentStatus.RED;
-            case "3" -> StudentStatus.YELLOW;
-            default -> null;
-        };
+        studentStatus = statusStringChangeEnum(status);
         System.out.println("id - 이름 -  상태");
         list.stream()
                 .filter(student -> student.getStudentStatus().getValue().equals(studentStatus.getValue()))
                 .forEach(student -> System.out.println(
-                        student.getStudentId() + " - " + student.getStudentName()
-                                + " - " + student.getStudentStatus().getValue()));
+                        STR."\{student.getStudentId()} - \{student.getStudentName()} - \{student.getStudentStatus().getValue()}"));
         System.out.println();
+    }
+
+    public List<Student> getStudentByStatus(StudentStatus findStatus) {
+        return repository.getList().stream().filter(s -> s.getStudentStatus() == findStatus).toList();
     }
 }

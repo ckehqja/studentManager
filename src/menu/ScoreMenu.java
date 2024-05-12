@@ -2,6 +2,7 @@ package menu;
 
 import model.Score;
 import model.Subject;
+import model.enums.StudentStatus;
 import service.ScoreService;
 import service.StudentService;
 import service.SubjectService;
@@ -36,6 +37,8 @@ public class ScoreMenu {
         System.out.println("1. 수강생 과목별 시험 최차 및 점수 등록");
         System.out.println("2. 수강생 과목별 회차 점수 수정");
         System.out.println("3. 수강생 과목 회차별 등급 조회");
+        System.out.println("4. 수강생의 과목별 평균 등급 조회");
+        System.out.println("5. 특정 상태 수강생들의 필수 과목 평균 등급");
         System.out.println("0. 뒤로가기");
         System.out.println();
         studentInput = sc.nextLine();
@@ -68,12 +71,20 @@ public class ScoreMenu {
                 subjectId = inputIntId(sc, SUBJECT_ID);
                 Subject findSubject = subjectService.findById(subjectId);
 
-                System.out.println(studentService.findById(studentId).getStudentName()
-                        + " - " + findSubject.getSubjectName()
-                        + " : " + findSubject.getSubjectType());
+                System.out.println(STR."\{studentService.findById(studentId).getStudentName()} - \{findSubject.getSubjectName()} : \{findSubject.getSubjectType()}");
                 Score findScore = scoreService.findBy2Id(studentId, subjectId);
 
                 scoreService.printScore(findScore);
+            }
+            case "4" -> {
+                studentId = inputIntId(sc, STUDENT_ID);
+                scoreService.averageGradeBySubject(studentId);
+            }
+            case "5" -> {
+                System.out.println("상태(1.green, 2.red, 3.yellow)를 적으세요>");
+                String statusInput = sc.nextLine();
+                StudentStatus findStatus = studentService.statusStringChangeEnum(statusInput);
+                scoreService.averageGradeByStatus(findStatus);
             }
             case "0" -> {
                 throw new IllegalAccessException("뒤로가기");
