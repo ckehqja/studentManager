@@ -19,6 +19,7 @@ public class Student implements CreateModel {
     public Student(String studentName, Set<String> subjectSet) {
         this.studentName = studentName;
         this.subjectSet = subjectSet;
+        this.studentStatus = StudentStatus.GREEN;
     }
 
     @Override

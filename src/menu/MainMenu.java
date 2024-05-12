@@ -36,7 +36,7 @@ public class MainMenu {
             mainInput = sc.nextLine();
             loopA:
             try {
-            while (true) {
+                while (true) {
                     switch (mainInput) {
                         case "1" -> {
                             StudentMenu.displayMenu();
@@ -53,8 +53,11 @@ public class MainMenu {
                             break loopA;
                         }
                     }
+                }
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
             }
-            }catch (Exception e) {}
         }
     }
 
